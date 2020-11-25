@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<script src="static/download.js"></script>
+
+<h1>Введите данные для обработки</h1>
+<div class="container">
+	<div class="poster">
+		<form method="POST">
+			{% if error %}
+			<div><h6>{{error}}</h6></div>
+			{% endif %}
+			<div><p>Токен <input name="token" type="text" value="{{ token }}" </p></div>
+
+			<div><p>Название репозитория <input name="repos" type="text" value="{{ repos }}"</p></div>
+			<div>
+				
+				<button type="submit" name="submit_button" class = "button" value="Run">Обработка</button>
+				{% if glob_list and not  error %}
+				<button type="submit" name="submit_button" class = "button"  value="More">Подробнее</button>
+				{% else %}
+				<button disabled class = "button disabled" >Подробнее</button>
+				<button disabled class = "button disabled">Сохранить как ...</button>
+				{% endif %}
+			</div>
+		</form>
+	</div>
+	<div class="not_poster">
+	{% if glob_list and not  error%}
+	<a href="/uploads/send_file"><button class = "button up"  >Сохранить как ...</button></a>
+	{% endif %}
+	{% if glob_list and not  error%}
+	</div>
+</div>
+
+</br>
+</br>
+<div>
+	<table align="center">
+		<thead><tr><th>№</th><th>Имя</th><th>Файл README.md</th><th>Текст выступления</th><th>Презентация</th><th>Пояснительная записка</th><th>Папка project<th>Размер репозитория</th><tr></thead>
+		<tbody>
+		{% for user, rdm, text, prez, pz, proj_fold, repos_size , uid, fnames in glob_list %}
+			<tr><td>{{ loop.index }}</td><td>{{ user }}</td><td>{{ rdm }}</td><td> {{ text }}</td><td>{{ prez }}</td><td>{{ pz }}</td><td>{{ proj_fold }}</td><td>{{ repos_size }} Кб</td></tr>
+		{% endfor %}
+		</tbody>
+		
+	</table>
+	{% endif %}
+</div>
+
+{% endblock %}
